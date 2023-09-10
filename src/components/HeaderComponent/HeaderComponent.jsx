@@ -1,7 +1,7 @@
 import React from 'react'
 //import Search from 'antd/lib/transfer/search'
 import { Badge, Col, Image ,Row} from 'antd';
-import { WrapperHeader, WrapperHeaderAccount, WrapperTextHeader ,WrapperTextHeaderSmall} from './style';
+import { WrapperHeader, WrapperHeaderAccount ,WrapperTextHeaderSmall} from './style';
 import {UserOutlined,CaretDownOutlined,ShoppingCartOutlined} from '@ant-design/icons';
 import ButtonSearch from '../ButtonSearch/ButtonSearch.jsx';
 import imageProductsmall from '../../assets/images/brand.png'
