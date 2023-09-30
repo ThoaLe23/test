@@ -8,11 +8,11 @@ import imageProductsmall from '../../assets/images/brand.png'
 
 const HeaderComponent = () => {
   return (
-    <div>
+    <div >
       <WrapperHeader>
-      <Row span ={4}>
+      <Row span ={8}>
           <Col >
-            <Image style={{width:'85px', height:'50px'}}src={imageProductsmall} alt="image small " preview={false}/>
+            <Image style={{width:'120px', height:'50px'}}src={imageProductsmall} alt="image small " preview={false}/>
           </Col>
         </Row>
         {/* <Col span={6}>
@@ -22,13 +22,14 @@ const HeaderComponent = () => {
         <Col span={12}>
         <ButtonSearch
           size="large"
+          style={{marginLeft:'20px'}}
           bordered ={false}
           textButton="Tìm kiếm"
           placeholder="input search text" //onSearch={onSearch}
            />
 
         </Col>
-        <Col span={6} style={{display:'flex', gap:'20px'}}>
+        <Col span={6} style={{display:'flex', gap:'54px',alignItems:'center'}}>
           <WrapperHeaderAccount>
           <UserOutlined style={{fontSize: '30px'}} /> 
             <div>
