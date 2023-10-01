@@ -8,16 +8,10 @@ export const WrapperCardStyle = styled(Card)`
     width: 200px;
   }
 `
-/*
-export const WrapperImageStyle = styled.img`
-  top : -1px;
-  left : -1px;
-  border-top-left-radius: 3px;
-  position: absol
-`*/
+
 export const StyleNameProduct= styled.div`
-  font-weight:400;
-  font-size:12px;
+  font-weight: 400;
+  font-size: 14px;
   line-height:16px;
   color: rgb(56, 56, 61);
 `
@@ -28,7 +22,6 @@ export const WrapperReportText = styled.div`
   display: flex;
   align-items:center;
   margin:6px 0 0px;
-
 `
 export const WrapperPriceText = styled.div`
   font-size:16px;

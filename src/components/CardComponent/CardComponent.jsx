@@ -3,28 +3,34 @@ import React from 'react'
 import { StyleNameProduct, WrapperCardStyle, WrapperDiscountText, WrapperPriceText, WrapperReportText } from './style'
 import {StarFilled } from '@ant-design/icons'
 import { WrapperStyleTextSell } from '../ProductDetailsComponent/style'
-//import logo from '../../assets/images/logo.png'
-const CardComponent = () => {
+import { useNavigate } from 'react-router-dom'
+
+const CardComponent = (props) => {
+  const {countInStock, description, image, name, price, rating, type, selled, discount, id} = props
+  const navigate = useNavigate()
+  const handleDetailsProduct = (id) => {
+    navigate(`/product-details/${id}`)
+  }
   return (
     <WrapperCardStyle
     hoverable
     headStyle={{width:'200px', height:'200px'}}
     style={{ width: 200}}
     bodyStyle={{padding:'10px'}}
-    cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+    cover={<img alt="example" src={image} />}
+    onClick={() => handleDetailsProduct(id)}
   >
-    <StyleNameProduct>Nước tẩy trang</StyleNameProduct>
+    <StyleNameProduct>{name}</StyleNameProduct>
     <WrapperReportText>
       <span style={{marginRight: '4px'}}>
-        <WrapperStyleTextSell>4.9 </WrapperStyleTextSell> <StarFilled style={{fontSize:'12px',color:'rgb(255, 196, 0)'}}/>
+        <WrapperStyleTextSell style={{fontSize:'12px'}}>{rating}</WrapperStyleTextSell> <StarFilled style={{fontSize:'12px',color:'rgb(255, 196, 0)'}}/>
       </span>  
-      <WrapperStyleTextSell> | Đã bán 1,2k</WrapperStyleTextSell>
+      <WrapperStyleTextSell style={{fontSize:'12px'}}> | Đã bán {selled || 1000}+</WrapperStyleTextSell>
     </WrapperReportText> 
     <WrapperPriceText >
-      <span style={{marginRight:'4px'}}>220.000đ</span>
-      
+      <span style={{marginRight:'8px'}} >{price?.toLocaleString()}</span>  
       <WrapperDiscountText>
-         -20%
+         -{discount || 5}%
       </WrapperDiscountText>
     </WrapperPriceText>
   </WrapperCardStyle>

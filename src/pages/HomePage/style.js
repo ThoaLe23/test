@@ -8,6 +8,7 @@ export const WrapperTypeProduct = styled.div`
   font-size: 15px;
   justify-content: flex-start;
   height: 44px;
+  margin-left: 130px;
 `
 export const WrapperButtonMore = styled(ButtonComponent)`
   &:hover{
