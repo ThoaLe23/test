@@ -35,9 +35,9 @@ const TypeProductPage = () => {
   const onchange =() => {}
   return (
     <LoadingComponent isLoading={loading}>
-      <div style={{width:'100%',background:'rgb(245, 245, 250)', height: 'calc(180vh - 64px'}}>
-      <div style={{width:'1270px', margin:'0 auto'}}> 
-        <Row style={{flexWrap: 'nowrap' ,paddingTop:'10px'}}>
+      <div style={{width:'100%',background:'rgb(245, 245, 250)', height: 'calc(180vh - 64px)'}}>
+      <div style={{width:'1270px', margin:'0 auto', height: '100%'}}> 
+        <Row style={{flexWrap: 'nowrap' ,paddingTop:'10px', height: 'calc(100% - 20px)'}}>
           <WrapperNavbar span={4} >
             <NavBarComponent/>
           </WrapperNavbar>

@@ -6,7 +6,7 @@ import { Image } from 'antd'
 import imageSignIn from '../../assets/images/sign-in(2).png'
 import { useState } from 'react'
 import {EyeFilled,EyeInvisibleFilled } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import * as UserService from '../../services/UserService'
 import { useMutationHooks } from '../../hooks/useMutationHook'
@@ -19,6 +19,7 @@ import { updateUser } from '../../redux/slides/userSlide'
 const SignInPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch();
@@ -29,10 +30,15 @@ const SignInPage = () => {
   const { data, isLoading , isSuccess} = mutation
 
   useEffect(() => {
+    console.log('location',location)
     if(isSuccess){
+      if(location?.state){
+        navigate(location?.state)
+      }  else{
+        navigate('/')
+      }
       localStorage.setItem('access_token', JSON.stringify(data?.access_token))
       if (data?.access_token) {  
-        navigate('/')
         const decoded = jwt_decode(data?.access_token)   
         if(decoded?.id){
           handleGetDetailsUser(decoded?.id, data?.access_token)
