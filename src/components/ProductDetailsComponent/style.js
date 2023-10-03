@@ -23,6 +23,9 @@ export const WrapperStyleTextSell = styled.span`
 export const WrapperPriceProduct = styled.div`
   background: white;
   border-radius: 4px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 `
 export const WrapperPriceTextProduct = styled.h1`
   font-size: 32px;
@@ -68,4 +71,11 @@ export const WrapperInputNumber = styled(InputNumber)`
       display:none !important;
     }
   }
+`
+export const WrapperDiscountText = styled.span`
+  font-size: 12px;
+  line-height: 150%;
+  padding: 0px 4px;
+  background: rgb(245, 245, 250);
+  border-radius: 8px;
 `

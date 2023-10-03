@@ -1,7 +1,7 @@
 import { Col, Image, Rate, Row } from 'antd'
 import React, { useState } from 'react'
 import imageProduct from '../../assets/images/00-srm.png'
-import { WrapperAddressProduct, WrapperInputNumber, WrapperPriceProduct, WrapperPriceTextProduct, WrapperQuanityProduct, WrapperStyleNameProduct, WrapperStyleTextSell } from './style'
+import { WrapperAddressProduct, WrapperDiscountText, WrapperInputNumber, WrapperPriceProduct, WrapperPriceTextProduct, WrapperQuanityProduct, WrapperStyleNameProduct, WrapperStyleTextSell } from './style'
 import {StarFilled, PlusOutlined , MinusOutlined} from '@ant-design/icons';
 import { ButtonComponent } from '../ButtonComponent/ButtonComponent';
 import * as ProductService from '../../services/ProductService'
@@ -10,6 +10,8 @@ import LoadingComponent from '../LoadingComponent/LoadingComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { addOrderProduct } from '../../redux/slides/orderSlide';
+import { convertPrice } from '../../utils';
+import Modelcomponent from '../ModalComponent/Modelcomponent';
 
 const ProductDetailsComponent = ({idProduct}) => {
   const [numProduct, setNumProduct] = useState(1)
@@ -17,7 +19,6 @@ const ProductDetailsComponent = ({idProduct}) => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
-  console.log('user',user)
   const fetchGetDetailProduct = async (context) => {
     const id = context?.queryKey && context?.queryKey[1]
     if(id){
@@ -58,13 +59,14 @@ const ProductDetailsComponent = ({idProduct}) => {
           amount: numProduct,
           image: productDetails?.image,
           price: productDetails?.price,
-          product: productDetails?._id
+          product: productDetails?._id,
+          discount: productDetails?.discount
         }
       }))
     }
   } 
   console.log('productDetails', productDetails, user)
-
+  
   return (
     <LoadingComponent isLoading={isLoading}>
       <Row style={{padding: '16px', background:'#fff',borderRadius:'4px'}}>
@@ -78,8 +80,12 @@ const ProductDetailsComponent = ({idProduct}) => {
             <WrapperStyleTextSell> | Đã bán 1,2k</WrapperStyleTextSell>
           </div>
           <WrapperPriceProduct>
-            <WrapperPriceTextProduct>{productDetails?.price}</WrapperPriceTextProduct>
+            <WrapperPriceTextProduct>{convertPrice(productDetails?.price * 1)}</WrapperPriceTextProduct>
+            <WrapperDiscountText>
+              -{productDetails?.discount || 5}%
+            </WrapperDiscountText>
           </WrapperPriceProduct>
+          
           <WrapperAddressProduct>
             <span>Giao đến </span>
             <span className='address'> {user?.address} </span>- 

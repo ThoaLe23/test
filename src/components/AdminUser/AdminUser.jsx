@@ -58,7 +58,7 @@ const  mutationDelete = useMutationHooks(
 )
 
   const getAllUsers = async () => {
-      const res = await UserService.getAllUser()
+      const res = await UserService.getAllUser(user?.access_token)
       return res
   }
   const fetchGetDetailUser = async (rowSelected) => {
@@ -84,6 +84,7 @@ const  mutationDelete = useMutationHooks(
       fetchGetDetailUser(rowSelected)
     }
   },[rowSelected])
+
   const handleDetailsUser = () => {
     setIsOpenDrawer(true)
   }
@@ -346,7 +347,7 @@ const  mutationDelete = useMutationHooks(
           </Form>
         </LoadingComponent>  
       </DrawerComponent>
-      <Modelcomponent title="Xóa người dùng" open={isModalOpenDelete} onCancel={handleCancelDelete} onOk={handleDeleteUser}>
+      <Modelcomponent title="Xóa người dùng" open={isModalOpenDelete} onCancel={handleCancelDelete} onOk={handleDeleteUser} >
         <LoadingComponent isLoading={isLoadingDeleted}>
           <div>Bạn có muốn xóa người dùng này không?</div>
         </LoadingComponent>  

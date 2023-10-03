@@ -35,7 +35,8 @@ const AdminProduct = () => {
     description:'',
     image:'',
     rating:'',
-    newtype: ''
+    newtype: '',
+    discount: '',
   })
   const [stateProductDetail, setStateProductDetail] = useState({
     name: '',
@@ -45,6 +46,7 @@ const AdminProduct = () => {
     description:'',
     image:'',
     rating:'',
+    discount: '',
   })
 
   const [form] = Form.useForm();
@@ -57,14 +59,15 @@ const AdminProduct = () => {
         countInStock ,
         description,
         image,
-        rating} = data
+        rating, discount} = data
     const res =  ProductService.createProduct({name ,
           price ,
           type,
           countInStock ,
           description,
           image,
-          rating
+          rating,
+          discount
         })
     return res
     }
@@ -100,6 +103,7 @@ const  mutationDelete = useMutationHooks(
         description:res?.data?.description,
         image:res?.data?.image,
         rating:res?.data?.rating,
+        discount: res?.data?.discount
       })
     }   
      setIsLoadingUpdate(false)
@@ -210,20 +214,6 @@ const  mutationDelete = useMutationHooks(
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    // render: (text) =>
-    //   searchedColumn === dataIndex ? (
-    //     <Highlighter
-    //       highlightStyle={{
-    //         backgroundColor: '#ffc069',
-    //         padding: 0,
-    //       }}
-    //       searchWords={[searchText]}
-    //       autoEscape
-    //       textToHighlight={text ? text.toString() : ''}
-    //     />
-    //   ) : (
-    //     text
-    //   ),
   });
 
   const columns = [
@@ -288,6 +278,7 @@ const  mutationDelete = useMutationHooks(
       description:'',
       image:'',
       rating:'',
+      discount: '',
     })
     form.resetFields()
   };
@@ -324,6 +315,7 @@ const  mutationDelete = useMutationHooks(
       description:'',
       image:'',
       rating:'',
+      discount: ''
     })
     form.resetFields()
   };
@@ -336,6 +328,7 @@ const  mutationDelete = useMutationHooks(
       description:stateProduct.description,
       image:stateProduct.image,
       rating:stateProduct.rating,
+      discount: stateProduct.discount
     }
     mutation.mutate(params, 
       {
@@ -388,7 +381,6 @@ const  mutationDelete = useMutationHooks(
       type: value
     })
   }
-  console.log('new-type',stateProduct)
   return (
     <div>
       <WrapperHeader>Quản lý sản phẩm</WrapperHeader>
@@ -454,6 +446,13 @@ const  mutationDelete = useMutationHooks(
               rules={[{ required: true, message: 'Please input product price!' }]}
             >
               <InputComponent value={stateProduct.price} onChange={handleOnChange} name="price"/>
+            </Form.Item>
+            <Form.Item
+              label="Discount"
+              name="discount"
+              rules={[{ required: true, message: 'Please input discount of product' }]}
+            >
+              <InputComponent value={stateProduct.discount} onChange={handleOnChange} name="discount"/>
             </Form.Item>
             <Form.Item
               label="Rating"
@@ -533,6 +532,13 @@ const  mutationDelete = useMutationHooks(
               rules={[{ required: true, message: 'Please input product price!' }]}
             >
               <InputComponent value={stateProductDetail.price} onChange={handleOnChangeDetail} name="price"/>
+            </Form.Item>
+            <Form.Item
+              label="Discount"
+              name="discount"
+              rules={[{ required: true, message: 'Please input discount of product' }]}
+            >
+              <InputComponent value={stateProductDetail.discount} onChange={handleOnChangeDetail} name="discount"/>
             </Form.Item>
             <Form.Item
               label="Rating"

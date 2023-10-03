@@ -8,6 +8,7 @@ import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import TypeProductPage from "../pages/TypeProductPage/TypeProductPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
 import AdminPage from "../pages/AdminPage/AdminPage";
+import PaymentPage from "../pages/Payment Page/PaymentPage";
 
 export const routes =[
     {
@@ -18,6 +19,11 @@ export const routes =[
     {
         path: '/oder',
         page: OderPage,
+        isShowHeader: true,
+    },
+    {
+        path: '/payment',
+        page: PaymentPage,
         isShowHeader: true,
     },
     {
