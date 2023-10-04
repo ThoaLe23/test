@@ -128,7 +128,8 @@ const  mutationDelete = useMutationHooks(
 
   const handleDetailsProduct = () => {
     setIsOpenDrawer(true)
-  }
+  } 
+
 
   const { data, isLoading , isSuccess,isError} = mutation
   const { data: dataUpdated, isLoading: isLoadingUpdated , isSuccess: isSuccessUpdated ,isError: isErrorUpdated} = mutationUpdate

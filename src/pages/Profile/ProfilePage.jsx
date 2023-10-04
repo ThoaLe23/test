@@ -9,9 +9,10 @@ import LoadingComponent from '../../components/LoadingComponent/LoadingComponent
 import * as message from '../../components/Message/Message'
 import {useDispatch} from 'react-redux'
 import { updateUser } from '../../redux/slides/userSlide';
-import { Button, Upload } from 'antd';
+import { Button, Form, Select, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { getBase64 } from '../../utils';
+import {  getBase64 } from '../../utils';
+import { useQuery } from '@tanstack/react-query';
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.user)
@@ -19,8 +20,16 @@ const ProfilePage = () => {
   const [name, setName] = useState()
   const [phone, setPhone] = useState()
   const [address, setAddress] = useState()
-  const [avatar, setAvatar] = useState()
-
+  const [avatar, setAvatar] = useState()  
+  const [stateUser, setStateUser] = useState({
+    name: '',
+    email: '',
+    phone:'',
+    isAdmin:false,
+    address: '',
+    avatar:''
+  })
+  
   const mutation = useMutationHooks(
     ( data) => {
         const {id, access_token, ...rests} = data
@@ -55,6 +64,12 @@ const ProfilePage = () => {
   const handleOnChangeEmail = (value) => {
     setEmail(value)
   }
+  const handleOnChangeProvince = (value) => {
+    setStateUser({
+      ...stateUser,
+      province: value
+    })
+  }
   const handleOnChangeName = (value) => {
     setName(value)
 
@@ -76,6 +91,7 @@ const ProfilePage = () => {
   const handleUpdate = () => {
     mutation.mutate({id: user?.id,email,name,phone,address, access_token: user?.access_token})
   }
+
   return (
     <div style={{width: '1270px', height:'500px' ,margin :'0 auto'}}>
       <WrapperHeader>Thông tin người dùng</WrapperHeader>
@@ -95,6 +111,7 @@ const ProfilePage = () => {
           <WrapperLabel htmlFor='phone'>Phone</WrapperLabel>
             <InputForm style={{width:'300px'}} id="phone" value={phone} onChange={handleOnChangePhone}/>
         </WrapperInput>
+
         <WrapperInput>
           <WrapperLabel htmlFor='address'>Address</WrapperLabel>
             <InputForm style={{width:'300px'}} id="address" value={address} onChange={handleOnChangeAddress}/>
