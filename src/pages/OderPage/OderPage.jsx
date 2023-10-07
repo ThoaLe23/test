@@ -3,24 +3,24 @@ import InputComponent from "../../components/InputComponent/InputComponent"
 import Modelcomponent from "../../components/ModalComponent/Modelcomponent"
 import { ButtonComponent } from "../../components/ButtonComponent/ButtonComponent"
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent"
-import { Button, Checkbox, Form, Image } from "antd"
+import { Button, Checkbox, Form, Image,  } from "antd"
 import {StarFilled, PlusOutlined , MinusOutlined,DeleteOutlined} from '@ant-design/icons';
-import { CustomCheckbox, WrapperCountOrder, WrapperInfo, WrapperItemOrder, WrapperPriceDiscount,WrapperLeft, WrapperListOrder, WrapperRight, WrapperStyleHeader, WrapperTotal } from "./style"
+import { CustomCheckbox, WrapperCountOrder, WrapperInfo, WrapperItemOrder, WrapperPriceDiscount,WrapperLeft, WrapperListOrder, WrapperRight, WrapperStyleHeader, WrapperTotal, WrapperStyleHeaderDelivery } from "./style"
 import { WrapperInputNumber } from "../../components/ProductDetailsComponent/style";
 import { useState } from 'react'
 import * as UserService from '../../services/UserService'
 import { useDispatch, useSelector } from "react-redux"
 import { decreaseAmount, increaseAmount, removeAllOrderProduct, removeOrderProduct, selectedOrder } from "../../redux/slides/orderSlide"
 import { convertPrice } from "../../utils"
+import jwt_decode from "jwt-decode";
 import { useMutationHooks } from "../../hooks/useMutationHook"
 import { useQuery } from "@tanstack/react-query"
 import * as message from '../../components/Message/Message'
 import { updateUser } from "../../redux/slides/userSlide"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const OderPage = () => {
   const [listChecked, setListchecked] = useState([])
-  const [rowSelected, setRowSelected] = useState('');
   const order = useSelector((state) => state.order)
   const user = useSelector((state) => state.user)
   const [isOpenModelUpdateInfo, setIsOpenModelUpdateInfo] =useState(false)
@@ -31,6 +31,7 @@ const OderPage = () => {
     address: '',
   })
   const navigate = useNavigate()
+ 
   const handleOnChangeDetail = (e) => {
     setStateUserDetail({
       ...stateUserDetail,
@@ -76,7 +77,7 @@ const OderPage = () => {
   useEffect(() => {
     form.setFieldsValue(stateUserDetail)
 },[form, stateUserDetail])
-
+ 
   useEffect(() => {
     if(isOpenModelUpdateInfo){
       setStateUserDetail({
@@ -89,31 +90,31 @@ const OderPage = () => {
 
   const priceMemo = useMemo(() => {
     const result = order?.orderItemsSelected?.reduce((total, cur) => {
-    return total + ((total + (cur.price * cur.amount)) - (total + (cur.price * cur.amount * (cur.discount / 100))))
+    return total + (cur.price * cur.amount)
     }, 0 )
     return result
   }, [order])
 
   const priceDiscountMemo = useMemo(() => {
     const result = order?.orderItemsSelected?.reduce((total, cur) => {
-    return total + (total + (cur.price * cur.amount * (cur.discount / 100)))
+    return total + (cur.price * cur.amount * (cur.discount / 100))
     },0)
     if (Number(result)){
       return result
     }
     return 0
   }, [ order])
+
   const deliveryPriceMemo = useMemo(() => {
-    if(priceMemo > 300000  ){
-      return 30000
+    if(priceMemo >= 200000 && priceMemo < 500000 ){
+      return 15000
     }
-    else if(!priceMemo){
+    else if(!priceMemo || priceMemo >= 500000 ){
       return 0
     }
     else {
       return 20000
     }
-    
   }, [priceMemo])
 
   const totalPriceMemo = useMemo(() => {
@@ -144,8 +145,10 @@ const OderPage = () => {
     return res
     },
   )
+  //const userId = {key: user?.id, value: order?.orderItems}
   
-  const { data, isLoading} = mutationUpdate
+  
+  const { data, isLoading,isSuccess} = mutationUpdate
   const handleCancelUpdate = () => {
     setStateUserDetail({
       name:'',
@@ -156,7 +159,6 @@ const OderPage = () => {
       setIsOpenModelUpdateInfo(false)
   }
   const handleUpdateInfoUser = () => {
-    console.log('stateUserDetail',stateUserDetail)
     const {name, phone, address} = stateUserDetail
     if(name && phone && address){
       mutationUpdate.mutate({id: user?.id, token: user?.access_token, ...stateUserDetail}, {
@@ -170,6 +172,8 @@ const OderPage = () => {
   const handleChangeAddress = () => {
     setIsOpenModelUpdateInfo(true)
   }
+
+
   return(     
     <div style={{background: '#f5f5fa', with: '100%', height: '100vh'}}>
       <div style={{height: '100%', width: '1270px', margin: '0 auto'}}>
@@ -192,14 +196,14 @@ const OderPage = () => {
               {order?.orderItems?.map((order) => {
                 return(
                   <WrapperItemOrder >
-                <div style={{width: '450px', display: 'flex', alignItems: 'center', gap: 4}}> 
+                <div style={{width: '440px', display: 'flex', alignItems: 'center', gap: "4px"}}> 
                   <Checkbox onChange={onChange} value={order?.product} checked={listChecked.includes(order?.product)}></Checkbox>
                     <Image preview={false} src= {order?.image} style={{width: '77px', height: '79px', objectFit: 'cover'}}/>
-                    <div style={{width: '260px', overflow:'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{order?.name}</div>
+                    <div  style={{width: '260px', overflow:'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{order?.name}</div>
                   </div>
                   <div style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <span >
-                      <span style={{ fontSize: '13px', color: '#242424' ,color: '#999',textDecoration:'line-through'}}>{convertPrice(order?.price * 1)}</span>
+                      <span style={{ fontSize: '13px', color: '#242424'}}>{convertPrice(order?.price * 1)}</span>
                     </span>
                   <WrapperCountOrder>
                     <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() =>  handleChangeCount('decrease', order?.product)} >
@@ -210,7 +214,7 @@ const OderPage = () => {
                         <PlusOutlined style={{ color: '#000', fontSize: '10px' }}/>
                     </button>
                   </WrapperCountOrder>
-                  <span style={{color: 'rgb(255, 66, 78)', fontSize: '13px', fontWeight: 500}}>{convertPrice(order?.price * order?.amount -(order?.price * order?.amount * (order?.discount /100)))}</span>
+                  <span style={{color: 'rgb(255, 66, 78)', fontSize: '13px', fontWeight: 500}}>{convertPrice(order?.price * order?.amount )}</span>
                   <DeleteOutlined style={{cursor: 'pointer'}} onClick={() => handleDeleteOrder(order?.product)}/>
                 </div>
                 </WrapperItemOrder> 

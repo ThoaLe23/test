@@ -15,6 +15,7 @@ import * as message from '../../components/Message/Message'
 import jwt_decode from "jwt-decode";
 import {useDispatch} from 'react-redux';
 import { updateUser } from '../../redux/slides/userSlide'
+import localStorage from 'redux-persist/es/storage'
 
 const SignInPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false)
@@ -26,11 +27,10 @@ const SignInPage = () => {
 
   const mutation = useMutationHooks(
      data => UserService.loginUser(data)
-  )
+  ) 
   const { data, isLoading , isSuccess} = mutation
 
   useEffect(() => {
-    console.log('location',location)
     if(isSuccess){
       if(location?.state){
         navigate(location?.state)

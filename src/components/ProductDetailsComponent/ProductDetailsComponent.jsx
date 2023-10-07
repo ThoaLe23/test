@@ -60,7 +60,8 @@ const ProductDetailsComponent = ({idProduct}) => {
           image: productDetails?.image,
           price: productDetails?.price,
           product: productDetails?._id,
-          discount: productDetails?.discount
+          discount: productDetails?.discount,
+          
         }
       }))
     }

@@ -78,6 +78,7 @@ export const orderSlide = createSlice({
        })
        state.orderItemsSelected = orderSelected
     },
+    
   }
 })
 

@@ -27,7 +27,7 @@ const AdminProduct = () => {
   const [typeSelect ,setTypeSelect] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
-  const [stateProduct, setStateProduct] = useState({
+  const inittial = () => ({
     name: '',
     price: '',
     type:'',
@@ -37,17 +37,9 @@ const AdminProduct = () => {
     rating:'',
     newtype: '',
     discount: '',
-  })
-  const [stateProductDetail, setStateProductDetail] = useState({
-    name: '',
-    price: '',
-    type:'',
-    countInStock: '',
-    description:'',
-    image:'',
-    rating:'',
-    discount: '',
-  })
+})
+  const [stateProduct, setStateProduct] = useState(inittial())
+  const [stateProductDetail, setStateProductDetail] = useState(inittial())
 
   const [form] = Form.useForm();
 
@@ -116,8 +108,12 @@ const  mutationDelete = useMutationHooks(
     // }
   }
   useEffect(() => {
+    if(!isModalOpen){
       form.setFieldsValue(stateProductDetail)
-  },[form, stateProductDetail])   
+    }else{
+      form.setFieldsValue(inittial())
+    }
+  },[form, stateProductDetail, isModalOpen])   
 
   useEffect(() => {
     if(rowSelected){

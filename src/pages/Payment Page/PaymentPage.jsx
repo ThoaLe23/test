@@ -11,11 +11,12 @@ import { useState } from 'react'
 import * as UserService from '../../services/UserService'
 import * as OrderService from '../../services/OrderService'
 import { useDispatch, useSelector } from "react-redux"
-import { decreaseAmount, increaseAmount,  removeOrderProduct, selectedOrder } from "../../redux/slides/orderSlide"
+import { decreaseAmount, increaseAmount,  removeAllOrderProduct,  removeOrderProduct, selectedOrder } from "../../redux/slides/orderSlide"
 import { convertPrice } from "../../utils"
 import { useMutationHooks } from "../../hooks/useMutationHook"
 import * as message from '../../components/Message/Message'
 import { updateUser } from "../../redux/slides/userSlide"
+import { useNavigate } from "react-router-dom"
 
 const PaymentPage = () => {
   const order = useSelector((state) => state.order)
@@ -23,6 +24,7 @@ const PaymentPage = () => {
   const [isOpenModelUpdateInfo, setIsOpenModelUpdateInfo] =useState(false)
   const dispatch = useDispatch()
   const [delivery, setDelivery] = useState('fast')
+  const navigate = useNavigate()
   const [payment, setPayment] = useState('later_money')
   const [stateUserDetail, setStateUserDetail] = useState({
     name: '',
@@ -53,21 +55,20 @@ const PaymentPage = () => {
 
   const priceMemo = useMemo(() => {
     const result = order?.orderItemsSelected?.reduce((total, cur) => {
-    return total + ((total + (cur.price * cur.amount)) - (total + (cur.price * cur.amount * (cur.discount / 100))))
+    return total + (cur.price * cur.amount)
     }, 0 )
     return result
   }, [order])
 
   const priceDiscountMemo = useMemo(() => {
     const result = order?.orderItemsSelected?.reduce((total, cur) => {
-    return total + (total + (cur.price * cur.amount * (cur.discount / 100)))
+    return total + (cur.price * cur.amount * (cur.discount / 100))
     },0)
     if (Number(result)){
       return result
     }
     return 0
   }, [ order])
-
   const deliveryPriceMemo = useMemo(() => {
     if(priceMemo > 300000  ){
       return 30000
@@ -84,7 +85,6 @@ const PaymentPage = () => {
   const totalPriceMemo = useMemo(() => {
       return Number(priceMemo) - Number(priceDiscountMemo) + Number(deliveryPriceMemo)
   }, [priceMemo, priceDiscountMemo, deliveryPriceMemo])
-
 
   const mutationUpdate = useMutationHooks(
     ( data) => {
@@ -125,7 +125,22 @@ const PaymentPage = () => {
 
   useEffect(() => {
     if(isSuccess && dataAdd?.status === 'OK'){
-      message.success('Đặt hàng thành công!')  
+      const arrayOrdered = []
+      order?.orderItemsSelected?.forEach(element => {
+        arrayOrdered.push(element.product)
+      });
+      dispatch(removeAllOrderProduct({listChecked: arrayOrdered}))
+      message.success('Đặt hàng thành công!')
+      navigate('/orderSuccess',{
+        state:{
+          delivery,
+          payment,
+          orders: order?.orderItemsSelected,
+           deliveryPriceMemo: deliveryPriceMemo,
+           priceDiscountMemo: priceDiscountMemo,
+          totalPriceMemo: totalPriceMemo
+        }
+      })  
     }
     else if(isError){
       message.error()
@@ -174,13 +189,14 @@ const PaymentPage = () => {
                 <div>
                   <Lable> Chọn phương thức giao hàng</Lable>
                   <WrapperRadio onChange={handleDilivery} value={delivery}>
-                    <Radio value="fast"><span style={{color:'#ea8500', fontWeight:'bold'}}>FAST</span>giao hàng tiết kiệm</Radio>
+                    <Radio value="fast"><span style={{color:'#ea8500', fontWeight:'bold'}}>FAST </span>Giao hàng tiết kiệm</Radio>
+                    <Radio value="go_jek"><span style={{color:'#ea8500', fontWeight:'bold'}}>GO_JEK </span>Giao hàng nhanh</Radio>
                   </WrapperRadio>
                 </div>
               </WrapperInfo>
               <WrapperInfo>
                 <div>
-                  <Lable> Chọn phương thức giao hàng</Lable>
+                  <Lable> Chọn phương thức thanh toán</Lable>
                   <WrapperRadio onChange={handlePayment} value={payment}>
                     <Radio value="later_money">Thanh toán tiền mặt khi nhận hàng</Radio>
                     <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio>
