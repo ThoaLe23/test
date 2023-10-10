@@ -78,7 +78,7 @@ const ProductDetailsComponent = ({idProduct}) => {
           <WrapperStyleNameProduct>{productDetails?.name}</WrapperStyleNameProduct>
           <div>
             <Rate allowHalf={true} disabled value={productDetails?.rating} />
-            <WrapperStyleTextSell> | Đã bán 1,2k</WrapperStyleTextSell>
+            <WrapperStyleTextSell> | {productDetails?.selled || 'Đã bán 1,2k' }</WrapperStyleTextSell>
           </div>
           <WrapperPriceProduct>
             <WrapperPriceTextProduct>{convertPrice(productDetails?.price * 1)}</WrapperPriceTextProduct>

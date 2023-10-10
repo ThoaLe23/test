@@ -15,17 +15,16 @@ const MyOderPage = () => {
   const location = useLocation()
   const { state } = location
    const navigate = useNavigate()
-  const params = useParams()
-  //const user = useSelector((state) => state.user)
   const fetchMyOrder = async () => {
-    const res = await OrderService.getDetailOrder(state?.id, state?.access_token)
+    const res = await OrderService.getAllOrder(state?.id, state?.token)
     return res.data
   }
+  const user = useSelector((state) => state.user)
   const queryOrder = useQuery({queryKey: ['orders'], queryFn: fetchMyOrder}, {
     enabled: state?.id && state?.token
   })
   const {isLoading , data} = queryOrder
-  console.log('data', data)
+  //console.log('data', data)
 
   const handleDetailsOrder = (id) => {
     navigate(`/details-order/${id}`, {
@@ -35,13 +34,29 @@ const MyOderPage = () => {
     })
   }
 
-  // const mutation = useMutationHooks(
-  //   (data) => {
-  //     const { id, token , orderItems, userId } = data
-  //     const res = OrderService.cancelOrder(id, token,orderItems, userId)
-  //     return res
-  //   }
-  // )
+  const mutation = useMutationHooks(
+    (data) => {
+      const { id, token, orderItems  } = data
+      const res = OrderService.cancelOrder(id, token, orderItems)
+      return res
+    }
+  )
+  const handleCanceOrder = (order) => {
+    mutation.mutate({id : order._id, token:state?.token, orderItems: order?.orderItems,}, {
+      onSuccess: () => {
+        queryOrder.refetch()
+      },
+    })
+  }
+  const { isLoading: isLoadingCancel, isSuccess: isSuccessCancel, isError: isErrorCancle, data: dataCancel } = mutation
+  useEffect(() => {
+    if (isSuccessCancel && dataCancel?.status === 'OK') {
+      message.success()
+    } 
+    else if (isErrorCancle) {
+      message.error()
+    }
+  }, [isErrorCancle, isSuccessCancel])
 
   const renderProduct = (data) => {
     return data?.map((order) => {
@@ -69,7 +84,7 @@ const MyOderPage = () => {
   }
 
   return(    
-    <LoadingComponent isLoading={isLoading}>
+    <LoadingComponent isLoading={isLoading || isLoadingCancel}>
       <WrapperContainer>
         <div style={{height: '100%', width: '1270px', margin: '0 auto'}}>
           <h4>Đơn hàng của tôi</h4>
@@ -98,7 +113,7 @@ const MyOderPage = () => {
                       </div>
                       <div style={{display: 'flex', gap: '10px'}}>
                       <ButtonComponent
-                          //onClick={() => handleCanceOrder(order)}
+                          onClick={() => handleCanceOrder(order)}
                           size={40}
                           styleButton={{
                               height: '36px',

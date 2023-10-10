@@ -55,6 +55,7 @@ export const WrapperProduct = styled.div`
   display:flex;
   align-items:flex-start;
   margin-top: 10px;
+  justify-content: space-between;
 `
 
 export const WrapperNameProduct = styled.div`

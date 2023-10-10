@@ -36,6 +36,7 @@ export const WrapperItemOrder = styled.div`
   padding: 9px 16px;
   background: #fff;
   margin-top: 12px;
+  width: 100%;
 `
 
 export const WrapperPriceDiscount = styled.span`
@@ -67,7 +68,8 @@ export const WrapperInfo = styled.div`
   background: #fff;
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
-  width: 100%
+  width: 100%;
+  flex-direction: column;
 `
 
 export const WrapperTotal = styled.div`
@@ -99,4 +101,15 @@ export const WrapperRadio = styled(Radio.Group)`
   flex-direction: column;
   gap: 10px;
   justify-content: center;
+`
+export const WrapperItemOrderInfo = styled.div`
+  padding: 17px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  background: #fff;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 `

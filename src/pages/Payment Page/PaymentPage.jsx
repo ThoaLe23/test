@@ -3,20 +3,20 @@ import InputComponent from "../../components/InputComponent/InputComponent"
 import Modelcomponent from "../../components/ModalComponent/Modelcomponent"
 import { ButtonComponent } from "../../components/ButtonComponent/ButtonComponent"
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent"
-import { Button, Checkbox, Form, Image, Radio } from "antd"
-import {StarFilled, PlusOutlined , MinusOutlined,DeleteOutlined} from '@ant-design/icons';
-import { CustomCheckbox, WrapperCountOrder, WrapperInfo, WrapperItemOrder, WrapperPriceDiscount,WrapperLeft, WrapperListOrder, WrapperRight, WrapperStyleHeader, WrapperTotal, WrapperRadio, Lable } from "./style"
-import { WrapperInputNumber } from "../../components/ProductDetailsComponent/style";
+import { Button, Checkbox, Form, Image, Radio,  } from "antd"
+import { CustomCheckbox, WrapperCountOrder, WrapperInfo, WrapperItemOrder, WrapperPriceDiscount,WrapperLeft, WrapperListOrder, WrapperRight, WrapperStyleHeader, WrapperTotal, WrapperStyleHeaderDelivery, Lable, WrapperRadio } from "./style"
 import { useState } from 'react'
 import * as UserService from '../../services/UserService'
-import * as OrderService from '../../services/OrderService'
 import { useDispatch, useSelector } from "react-redux"
-import { decreaseAmount, increaseAmount,  removeAllOrderProduct,  removeOrderProduct, selectedOrder } from "../../redux/slides/orderSlide"
 import { convertPrice } from "../../utils"
 import { useMutationHooks } from "../../hooks/useMutationHook"
+import { useQuery } from "@tanstack/react-query"
 import * as message from '../../components/Message/Message'
 import { updateUser } from "../../redux/slides/userSlide"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
+import { removeAllOrderProduct} from "../../redux/slides/orderSlide"
+import * as OrderService from '../../services/OrderService'
+
 
 const PaymentPage = () => {
   const order = useSelector((state) => state.order)
@@ -30,7 +30,9 @@ const PaymentPage = () => {
     name: '',
     phone:'',
     address: '',
+    isAdmin:false
   })
+ 
   const handleOnChangeDetail = (e) => {
     setStateUserDetail({
       ...stateUserDetail,
@@ -39,16 +41,18 @@ const PaymentPage = () => {
   }
   const [form] = Form.useForm();
 
+
   useEffect(() => {
     form.setFieldsValue(stateUserDetail)
 },[form, stateUserDetail])
-
+ 
   useEffect(() => {
     if(isOpenModelUpdateInfo){
       setStateUserDetail({
         address: user?.address,
         name: user?.name,
         phone: user?.phone,
+        isAdmin:false
       })
     }
   },[isOpenModelUpdateInfo])
@@ -69,22 +73,41 @@ const PaymentPage = () => {
     }
     return 0
   }, [ order])
+
   const deliveryPriceMemo = useMemo(() => {
-    if(priceMemo > 300000  ){
-      return 30000
+    if(priceMemo > 500000){
+      return 10000
     }
     else if(!priceMemo){
       return 0
     }
-    else {
+    else if(priceMemo < 500000){
       return 20000
     }
-    
   }, [priceMemo])
 
   const totalPriceMemo = useMemo(() => {
-      return Number(priceMemo) - Number(priceDiscountMemo) + Number(deliveryPriceMemo)
-  }, [priceMemo, priceDiscountMemo, deliveryPriceMemo])
+    return priceMemo - priceDiscountMemo + deliveryPriceMemo
+}, [priceMemo, priceDiscountMemo, deliveryPriceMemo])
+
+  const handleAddOrder = () => {
+    if(user?.access_token && order?.orderItemsSelected && user?.name
+      && user?.address && user?.phone && priceMemo && user?.id){
+        mutationAddOrder.mutate({ 
+              token: user?.access_token,
+              orderItems: order?.orderItemsSelected, 
+              fullname: user?.name,
+              phone: user?.phone,
+              address: user?.address,
+              paymentMethod: payment,
+              itemsPrice: priceMemo,
+              shippingPrice: deliveryPriceMemo,
+              totalPrice: totalPriceMemo,
+              user: user?.id
+            })
+    }
+    
+  }
 
   const mutationUpdate = useMutationHooks(
     ( data) => {
@@ -93,34 +116,17 @@ const PaymentPage = () => {
     return res
     },
   )
-
+  //const userId = {key: user?.id, value: order?.orderItems}
+  
   const mutationAddOrder = useMutationHooks(
     ( data) => {
-      const {  token, ...rests} = data
-    const res = OrderService.createOrder(token, {...rests}) 
+      const { token, ...rests} = data
+    const res = OrderService.createOrder( token, {...rests}) 
     return res
     },
   )
-    const handleAddOrder = () => {
-    if(user?.access_token && order?.orderItemsSelected && user?.name
-      && user?.address && user?.phone && priceMemo && user?.id){
-        // eslint-disable-next-line no-unused-expressions
-        mutationAddOrder.mutate(
-      { token: user?.access_token, 
-       orderItems: order?.orderItemsSelected,
-       fullname: user?.name,
-       address: user?.address, 
-       phone: user?.phone,
-       paymentMethod: payment,
-       itemsPrice: priceMemo,
-       shippingPrice: deliveryPriceMemo,
-       totalPrice: totalPriceMemo,
-       user: user?.id
-      },
-      )
-    }
-  }
-  const {isLoading, data} = mutationUpdate
+  
+  const { data, isLoading} = mutationUpdate
   const {data: dataAdd,isLoading: isLoadingAddOrder, isSuccess, isError} = mutationAddOrder
 
   useEffect(() => {
@@ -133,12 +139,13 @@ const PaymentPage = () => {
       message.success('Đặt hàng thành công!')
       navigate('/orderSuccess',{
         state:{
+          user,
           delivery,
           payment,
           orders: order?.orderItemsSelected,
-           deliveryPriceMemo: deliveryPriceMemo,
-           priceDiscountMemo: priceDiscountMemo,
-          totalPriceMemo: totalPriceMemo
+          deliveryPriceMemo: deliveryPriceMemo,
+          priceDiscountMemo: priceDiscountMemo,
+          totalPriceMemo: totalPriceMemo,
         }
       })  
     }
@@ -146,12 +153,12 @@ const PaymentPage = () => {
       message.error()
     }
   },[isSuccess, isError])
-
   const handleCancelUpdate = () => {
     setStateUserDetail({
       name:'',
       phone:'',
       address:'',
+      isAdmin:false
     })
     form.resetFields() 
       setIsOpenModelUpdateInfo(false)
@@ -170,6 +177,7 @@ const PaymentPage = () => {
   const handleChangeAddress = () => {
     setIsOpenModelUpdateInfo(true)
   }
+
   const handleDilivery = (e) => {
     setDelivery(e.target.value)
   }
@@ -182,27 +190,27 @@ const PaymentPage = () => {
     <div style={{background: '#f5f5fa', with: '100%', height: '100vh'}}>
       <LoadingComponent isLoading={isLoadingAddOrder}>
         <div style={{height: '100%', width: '1270px', margin: '0 auto'}}>
-          <h3 style={{fontWeight: 'bold'}}>Phương thức thanh toán</h3>
+          <h3 style={{fontWeight: 'bold'}}>Giỏ hàng</h3>
           <div style={{ display: 'flex', justifyContent: 'center'}}>
             <WrapperLeft>
+            <WrapperInfo>
+                  <div>
+                    <Lable> Chọn phương thức giao hàng</Lable>
+                    <WrapperRadio  onChange={handleDilivery} value={delivery}>
+                      <Radio value="fast"><span style={{color:'#ea8500', fontWeight:'bold'}}>FAST </span>Giao hàng tiết kiệm</Radio>
+                      <Radio value="go_jek"><span style={{color:'#ea8500', fontWeight:'bold'}}>GO_JEK </span>Giao hàng nhanh</Radio>
+                    </WrapperRadio>
+                  </div>
+            </WrapperInfo>
               <WrapperInfo>
-                <div>
-                  <Lable> Chọn phương thức giao hàng</Lable>
-                  <WrapperRadio onChange={handleDilivery} value={delivery}>
-                    <Radio value="fast"><span style={{color:'#ea8500', fontWeight:'bold'}}>FAST </span>Giao hàng tiết kiệm</Radio>
-                    <Radio value="go_jek"><span style={{color:'#ea8500', fontWeight:'bold'}}>GO_JEK </span>Giao hàng nhanh</Radio>
-                  </WrapperRadio>
-                </div>
-              </WrapperInfo>
-              <WrapperInfo>
-                <div>
-                  <Lable> Chọn phương thức thanh toán</Lable>
-                  <WrapperRadio onChange={handlePayment} value={payment}>
-                    <Radio value="later_money">Thanh toán tiền mặt khi nhận hàng</Radio>
-                    <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio>
-                  </WrapperRadio>
-                </div>
-              </WrapperInfo>  
+                  <div>
+                    <Lable> Chọn phương thức thanh toán</Lable>
+                    <WrapperRadio  onChange={handlePayment} value={payment}>
+                      <Radio value="later_money">Thanh toán tiền mặt khi nhận hàng</Radio>
+                      {/* <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio> */}
+                    </WrapperRadio>
+                  </div>
+                </WrapperInfo>  
             </WrapperLeft>
             <WrapperRight>
               <div style={{width: '100%'}}>
@@ -224,7 +232,6 @@ const PaymentPage = () => {
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <span>Giảm giá</span>
                     <span style={{color: '#000', fontSize: '14px', fontWeight: 'bold'}}>{convertPrice(priceDiscountMemo)}</span>
-                    {/* <span style={{color: '#000', fontSize: '14px', fontWeight: 'bold'}}>{priceDiscountMemo}</span>  */}
                   </div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <span>Phí ship</span>
@@ -289,8 +296,8 @@ const PaymentPage = () => {
               </Form.Item>
             </Form>
           </LoadingComponent>  
-        </Modelcomponent> 
-      </LoadingComponent>       
+        </Modelcomponent>      
+    </LoadingComponent>  
   </div>
   )
 }

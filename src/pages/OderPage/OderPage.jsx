@@ -106,19 +106,19 @@ const OderPage = () => {
   }, [ order])
 
   const deliveryPriceMemo = useMemo(() => {
-    if(priceMemo >= 200000 && priceMemo < 500000 ){
-      return 15000
+    if(priceMemo > 500000){
+      return 10000
     }
-    else if(!priceMemo || priceMemo >= 500000 ){
+    else if(!priceMemo){
       return 0
     }
-    else {
+    else if(priceMemo < 500000){
       return 20000
     }
   }, [priceMemo])
 
   const totalPriceMemo = useMemo(() => {
-      return Number(priceMemo) - Number(priceDiscountMemo) + Number(deliveryPriceMemo)
+      return priceMemo - priceDiscountMemo + deliveryPriceMemo
   }, [priceMemo, priceDiscountMemo, deliveryPriceMemo])
 
   const handleRemoveAllOrder = () => {
@@ -175,9 +175,9 @@ const OderPage = () => {
 
 
   return(     
-    <div style={{background: '#f5f5fa', with: '100%', height: '100vh'}}>
+    <div style={{background: '#f5f5fa', with: '100%', height: '150vh'}}>
       <div style={{height: '100%', width: '1270px', margin: '0 auto'}}>
-        <h3 style={{fontWeight: 'bold'}}>Giỏ hàng</h3>
+        <h3 style={{fontWeight: 'bold'}}>Phương thức đặt hàng</h3>
         <div style={{ display: 'flex', justifyContent: 'center'}}>
           <WrapperLeft>
             <WrapperStyleHeader>
