@@ -40,9 +40,9 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
       });
       dispatch(removeAllOrderProduct({listChecked: arrayOrdered}))
     setLoading(false)
-
+    navigate('/')
    // localStorage.removeItem('access_token')
-   // localStorage.clear('Badge')
+   //localStorage.clear()
   }
   useEffect(() => {
     setLoading(true)

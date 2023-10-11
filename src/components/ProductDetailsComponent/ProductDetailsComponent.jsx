@@ -64,9 +64,37 @@ const ProductDetailsComponent = ({idProduct}) => {
           
         }
       }))
+      navigate('/oder')
     }
   } 
-  console.log('productDetails', productDetails, user)
+  const handleAddOrderProduct1 = () => {
+    if(!user?.id){
+      navigate('/sign-in', {state: location?.pathname})
+    }
+    else{
+      // {
+      //   name: {type: String, required: true},
+      //   amount:{type: Number, required: true},
+      //   image: { type: String, required: true},
+      //   price: { type: Number, required: true},
+      //   product:{
+      //     type: mongoose.Schema.Types.ObjectId,
+      //     ref: 'Product',
+      //     required:true,},
+      //   },
+      dispatch(addOrderProduct({
+        orderItem:{
+          name: productDetails?.name,
+          amount: numProduct,
+          image: productDetails?.image,
+          price: productDetails?.price,
+          product: productDetails?._id,
+          discount: productDetails?.discount,
+          
+        }
+      }))
+    }
+  }
   
   return (
     <LoadingComponent isLoading={isLoading}>
@@ -114,8 +142,9 @@ const ProductDetailsComponent = ({idProduct}) => {
             ></ButtonComponent>
             <ButtonComponent
               size={40} 
-              styleButton={{background: '#fff',height: '48px', width: '220px', border:'1px solid rgb(10,104,255)', borderRadius:'4px'}}
+              styleButton={{background: '#fff',height: '48px', width: '220px', border:'1px solid rgb(10,104,255)', borderRadius:'4px',cursor: 'pointer'}}
               textButton={'Thêm vào giỏ hàng'}
+              onClick={handleAddOrderProduct1}
               styleTextButton={{color:'rgb(10,104,255)',fontSize:'15px',fontWeight:'700'}}
             ></ButtonComponent>
           </div>
