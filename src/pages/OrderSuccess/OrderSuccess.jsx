@@ -18,7 +18,6 @@ const OrderSuccess = () => {
   const {state} = location
   const { id } = params
 
-console.log(state)
   return(     
     <div style={{background: '#f5f5fa', with: '100%', height: 'fit-content'}}>
       <LoadingComponent isLoading={false}>

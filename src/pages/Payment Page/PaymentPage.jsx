@@ -16,7 +16,9 @@ import { updateUser } from "../../redux/slides/userSlide"
 import { useLocation, useNavigate } from "react-router-dom"
 import { removeAllOrderProduct} from "../../redux/slides/orderSlide"
 import * as OrderService from '../../services/OrderService'
-
+import { PayPalButton } from "react-paypal-button-v2";
+import * as PaymentService from '../../services/PaymentService'
+import { toHaveFormValues } from "@testing-library/jest-dom/matchers"
 
 const PaymentPage = () => {
   const order = useSelector((state) => state.order)
@@ -26,6 +28,7 @@ const PaymentPage = () => {
   const [delivery, setDelivery] = useState('fast')
   const navigate = useNavigate()
   const [payment, setPayment] = useState('later_money')
+  const [sdkReady, setSdkReady] = useState(false)
   const [stateUserDetail, setStateUserDetail] = useState({
     name: '',
     phone:'',
@@ -186,6 +189,45 @@ const PaymentPage = () => {
     setPayment(e.target.value)
   }
 
+  const onSuccessPaypal =(details, data) => {
+    mutationAddOrder.mutate({ 
+      token: user?.access_token,
+      orderItems: order?.orderItemsSelected, 
+      fullname: user?.name,
+      phone: user?.phone,
+      address: user?.address,
+      paymentMethod: payment,
+      itemsPrice: priceMemo,
+      shippingPrice: deliveryPriceMemo,
+      totalPrice: totalPriceMemo,
+      user: user?.id,
+      isPaid: true,
+      paidAd: details.update_time
+    })
+  }
+
+
+  const addPaypal= async () => {
+    const {data} = await PaymentService.getConfig()
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = `https://www.paypal.com/sdk/js?client-id=${data}`
+    script.async = true
+    script.onload = () => {
+      setSdkReady(true)
+    }
+    document.body.appendChild(script)
+  }
+
+  useEffect(() => {
+    if(!window.paypal) {
+        addPaypal()
+
+    }else{
+        setSdkReady(true)
+    }
+  },[])
+
   return(     
     <div style={{background: '#f5f5fa', with: '100%', height: '100vh'}}>
       <LoadingComponent isLoading={isLoadingAddOrder}>
@@ -207,7 +249,7 @@ const PaymentPage = () => {
                     <Lable> Chọn phương thức thanh toán</Lable>
                     <WrapperRadio  onChange={handlePayment} value={payment}>
                       <Radio value="later_money">Thanh toán tiền mặt khi nhận hàng</Radio>
-                      {/* <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio> */}
+                      <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio>
                     </WrapperRadio>
                   </div>
                 </WrapperInfo>  
@@ -246,7 +288,20 @@ const PaymentPage = () => {
                   </span>
                 </WrapperTotal>
               </div>
-              <ButtonComponent
+              {payment === 'paypal' && sdkReady ? (
+                <div style={{width:'320px'}}>
+                <PayPalButton
+                  amount={Math.round(totalPriceMemo/24450)}
+                  // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                  onSuccess={onSuccessPaypal}
+                  onError={() => {
+                    alert('Error')
+                  }}
+
+                />
+                </div>
+              ):(
+                <ButtonComponent
                 onClick={() => handleAddOrder()}
                 size={40}
                 styleButton={{
@@ -256,9 +311,11 @@ const PaymentPage = () => {
                     border: 'none',
                     borderRadius: '4px'
                 }}
-                  textButton={'Đặt hàng'}
+                  textbutton={'Đặt hàng'}
                 styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
             ></ButtonComponent>
+              )}
+              
             </WrapperRight>
             </div>
         </div>

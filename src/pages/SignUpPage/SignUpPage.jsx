@@ -50,7 +50,6 @@ const SignUpPage = () => {
 
   const handleSignUp = () => {
     mutation.mutate({email, password, confirmPassword})
-    console.log('sign-up', email, password, confirmPassword)
   }
   
   return (
@@ -114,7 +113,7 @@ const SignUpPage = () => {
               borderRadius:'4px',
               margin: '26px 0 10px',
             }}
-            textButton={'Đăng ký'}
+            textbutton={'Đăng ký'}
             styleTextButton={{color:'#fff',fontSize:'15px',fontWeight:'700'}}
           ></ButtonComponent>
           </LoadingComponent>

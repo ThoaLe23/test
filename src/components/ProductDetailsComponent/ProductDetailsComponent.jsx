@@ -137,13 +137,13 @@ const ProductDetailsComponent = ({idProduct}) => {
               size={40} 
               styleButton={{background: 'rgb(255,57,69)', height: '48px', width: '220px', border:'1px', borderRadius:'4px', cursor: 'pointer'}}
               onClick={handleAddOrderProduct}
-              textButton={'Chọn mua'}
+              textbutton={'Chọn mua'}
               styleTextButton={{color:'#fff',fontSize:'15px',fontWeight:'700'}}
             ></ButtonComponent>
             <ButtonComponent
               size={40} 
               styleButton={{background: '#fff',height: '48px', width: '220px', border:'1px solid rgb(10,104,255)', borderRadius:'4px',cursor: 'pointer'}}
-              textButton={'Thêm vào giỏ hàng'}
+              textbutton={'Thêm vào giỏ hàng'}
               onClick={handleAddOrderProduct1}
               styleTextButton={{color:'rgb(10,104,255)',fontSize:'15px',fontWeight:'700'}}
             ></ButtonComponent>

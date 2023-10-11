@@ -13,7 +13,6 @@ const TypeProductPage = () => {
   const {state} = useLocation()
   const [loading, setLoading] = useState(false)
   const [products, stateProducts] = useState([])
-  //console.log('location', location)
   const fetchProductType = async(type) => {
     setLoading(true)
     const res = await ProductService.getProductType(type)
@@ -23,7 +22,6 @@ const TypeProductPage = () => {
     }else{
       setLoading(false)
     }
-    console.log('res', res)
   }
 
   useEffect(() => {
@@ -31,7 +29,6 @@ const TypeProductPage = () => {
     fetchProductType(state)
     }
   },[state])
-  console.log('loading',loading)
   const onchange =() => {}
   return (
     <LoadingComponent isLoading={loading}>

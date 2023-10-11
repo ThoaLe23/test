@@ -128,7 +128,7 @@ const ProfilePage = () => {
               background: '#4cad8f',
               margin: '0 auto',
             }}
-            textButton={'Cập nhật'}
+            textbutton={'Cập nhật'}
             styleTextButton={{color:'#fff',fontSize:'15px',fontWeight:'600'}}
           ></ButtonComponent> 
       </WrapperContentProfile>

@@ -46,7 +46,6 @@ const DetailsOrderPage = () => {
     }
     return 0
   }, [data])
-  console.log(data)
 
 
   return(     

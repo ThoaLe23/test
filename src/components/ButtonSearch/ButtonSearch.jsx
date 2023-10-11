@@ -5,7 +5,7 @@ import { ButtonComponent } from '../ButtonComponent/ButtonComponent';
 
 const ButtonSearch = (props) => {
   const{
-    size,placeholder,textButton,
+    size,placeholder,textbutton,
     bordered,backgroundColorInput = '#fff', backgroundColorButton ='#F1E0B0',
     colorButton ='#000'
   }=props
@@ -22,7 +22,7 @@ const ButtonSearch = (props) => {
         size={size} 
         styleButton={{background: backgroundColorButton,borderRadius: '0px'}}
         icon={<SearchOutlined color={colorButton} />}
-        textButton={textButton}
+        textbutton={textbutton}
         styleTextButton={{color: colorButton}}
       />
     </div>

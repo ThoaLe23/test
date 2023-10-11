@@ -120,7 +120,7 @@ const MyOderPage = () => {
                               border: '1px solid #9255FD',
                               borderRadius: '4px'
                           }}
-                          textButton={'Hủy đơn hàng'}
+                          textbutton={'Hủy đơn hàng'}
                           styleTextButton={{ color: '#9255FD', fontSize: '14px' }}
                         >
                         </ButtonComponent>
@@ -132,7 +132,7 @@ const MyOderPage = () => {
                               border: '1px solid #9255FD',
                               borderRadius: '4px'
                           }}
-                          textButton={'Xem chi tiết'}
+                          textbutton={'Xem chi tiết'}
                           styleTextButton={{ color: '#9255FD', fontSize: '14px' }}
                         >
                         </ButtonComponent>
