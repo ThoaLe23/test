@@ -7,7 +7,7 @@ import { isJsonString } from "./utils";
 import jwt_decode from "jwt-decode";
 import * as UserService from "./services/UserService";
 import {useDispatch, useSelector} from 'react-redux';
-import { updateUser } from './redux/slides/userSlide'
+import {resetUser, updateUser } from './redux/slides/userSlide'
 import { useState } from "react";
 import LoadingComponent from "./components/LoadingComponent/LoadingComponent";
 
@@ -27,9 +27,9 @@ function App() {
   }, [])
 
   const handleDecoded = () => {
-    let storageData = localStorage.getItem("access_token")
+    let storageData = user?.access_token || localStorage.getItem('access_token')
     let decoded = {}
-    if (storageData && isJsonString(storageData)) {
+    if (storageData && isJsonString(storageData) && !user?.access_token) {
       storageData = JSON.parse(storageData);
       decoded = jwt_decode(storageData);
     }
@@ -39,18 +39,27 @@ function App() {
   UserService.axiosJWT.interceptors.request.use(async (config) => {
     const currentTime = new Date()
     const { decoded } = handleDecoded()
+    let storageRefreshToken = localStorage.getItem('refresh_token')
+    const refreshToken = JSON.parse(storageRefreshToken)
+    const decodedRefreshToken =  jwt_decode(refreshToken)
     if( decoded?.exp < currentTime.getTime() / 1000){
-      const data = await UserService.refreshToken()
+      if(decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
+      const data = await UserService.refreshToken(refreshToken)
       config.headers['token'] = `Beare ${data?.access_token}`
+    }else{
+      dispatch(resetUser())
     }
+  }
     return config;
   }, function (error) {
     return Promise.reject(error);
   });
 
   const handleGetDetailsUser = async ( id, token) => {
+    let storageRefreshToken = localStorage.getItem('refresh_token')
+    const refreshToken = JSON.parse(storageRefreshToken)
     const res = await UserService.getDetailsUser(id, token)
-    dispatch(updateUser({...res?.data, access_token: token }))
+    dispatch(updateUser({...res?.data, access_token: token, refreshToken: refreshToken }))
    
   }
 
