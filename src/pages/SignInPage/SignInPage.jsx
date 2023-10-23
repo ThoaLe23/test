@@ -38,8 +38,6 @@ const SignInPage = () => {
         navigate('/')
       }
       localStorage.setItem('access_token', JSON.stringify(data?.access_token))
-      localStorage.setItem('refresh_token', JSON.stringify(data?.refresh_token))
-
       if (data?.access_token) {  
         const decoded = jwt_decode(data?.access_token)   
         if(decoded?.id){
@@ -50,12 +48,9 @@ const SignInPage = () => {
     
    },[ isSuccess ])
 
-  const handleGetDetailsUser = async ( id, token) => {
-    const storage = localStorage.getItem('refresh_token')
-    const refreshToken = JSON.parse(storage)
+   const handleGetDetailsUser = async ( id, token) => {
     const res = await UserService.getDetailsUser(id, token)
-    dispatch(updateUser({...res?.data, access_token: token,
-    refreshToken }))
+    dispatch(updateUser({...res?.data, access_token: token }))
   }
 
   const handleNavigateSignUp = () => {
@@ -79,7 +74,7 @@ const SignInPage = () => {
     <div style={{display:'flex', alignItems:'center',justifyContent:'center', background:'rgba(0, 0, 0, 0.53)',height:'100vh'}}>
       <div style={{width:'800px',height:'450px', borderRadius:'6px',background:'#fff',display:'flex'}}>
       <WrapperContainerLeft>
-        <h1 >Xin chào</h1>
+        <h1 class='logo-login'>Xin chào</h1>
         <p >Đăng nhập hoặc Tạo tài khoản</p>
         <InputForm id="sign-in email" style={{marginBottom:'10px'}} placeholder="abc@gmail.com"
          value={email} onChange={handleOnChangeEmail}/>

@@ -41,8 +41,8 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
       dispatch(removeAllOrderProduct({listChecked: arrayOrdered}))
     setLoading(false)
     navigate('/')
-   // localStorage.removeItem('access_token')
-   //localStorage.clear()
+    localStorage.removeItem('access_token')
+    localStorage.clear()
   }
   useEffect(() => {
     setLoading(true)
@@ -100,7 +100,7 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
       <Row span ={8}>
           <Col >
           <WrapperTextHeader>
-            <Image style={{width:'120px', height:'50px',cursor: 'pointer'}} onClick={handleNavigateHome} src={logo} alt="image small " preview={false}/></WrapperTextHeader>
+            <Image id="logo-shop" style={{width:'120px', height:'50px',cursor: 'pointer'}} onClick={handleNavigateHome} src={logo} alt="image small " preview={false}/></WrapperTextHeader>
           </Col>
         </Row>
         
@@ -111,6 +111,7 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
               style={{marginLeft:'20px', borderRadius: '0px'}}
               textbutton="Tìm kiếm"
               placeholder="input search text" 
+              id='input-search'
               onChange={onSearch}
               />
           </Col>
@@ -126,7 +127,7 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
             </Popover>
           </>
             ): (
-            <div onClick={handleNavigateLogin} style={{cursor: 'pointer'}}>
+            <div class='login' onClick={handleNavigateLogin} style={{cursor: 'pointer'}}>
               <WrapperTextHeaderSmall>Đăng nhập / Đăng ký</WrapperTextHeaderSmall>
               <div>
                 <WrapperTextHeaderSmall>Tài khoản</WrapperTextHeaderSmall>
