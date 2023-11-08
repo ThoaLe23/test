@@ -80,10 +80,12 @@ const HomePage = () => {
             {stateProducts?.map((product) => {
               return(
                 <CardComponent 
+                
+                  class='product'
                   key={product._id} 
                   countInStock={product.countInStock} 
                   description ={product.description}
-                  image = {product.image}
+                  image = {product.image }
                   name = {product.name}
                   price = {product.price}
                   rating = {product.rating}

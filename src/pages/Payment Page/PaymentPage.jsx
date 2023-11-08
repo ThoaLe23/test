@@ -238,9 +238,9 @@ const PaymentPage = () => {
             <WrapperInfo>
                   <div>
                     <Lable> Chọn phương thức giao hàng</Lable>
-                    <WrapperRadio  onChange={handleDilivery} value={delivery}>
+                    <WrapperRadio id='radio-shipping'  onChange={handleDilivery} value={delivery}>
                       <Radio value="fast"><span style={{color:'#ea8500', fontWeight:'bold'}}>FAST </span>Giao hàng tiết kiệm</Radio>
-                      <Radio value="go_jek"><span style={{color:'#ea8500', fontWeight:'bold'}}>GO_JEK </span>Giao hàng nhanh</Radio>
+                      {/* <Radio value="go_jek"><span style={{color:'#ea8500', fontWeight:'bold'}}>GO_JEK </span>Giao hàng nhanh</Radio> */}
                     </WrapperRadio>
                   </div>
             </WrapperInfo>
@@ -249,7 +249,7 @@ const PaymentPage = () => {
                     <Lable> Chọn phương thức thanh toán</Lable>
                     <WrapperRadio  onChange={handlePayment} value={payment}>
                       <Radio value="later_money">Thanh toán tiền mặt khi nhận hàng</Radio>
-                      <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio>
+                      {/* <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio> */}
                     </WrapperRadio>
                   </div>
                 </WrapperInfo>  
@@ -259,10 +259,10 @@ const PaymentPage = () => {
                 <WrapperInfo>
                   <div >
                     <span> Địa chỉ: </span>
-                    <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding:'5px 0 5px'}}>{` ${user?.name}`}</span>
+                    <span id="fname" style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding:'5px 0 5px'}}>{` ${user?.name}`}</span>
                     <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between',paddingBottom:'5px'}} >{` ${user?.address}`}</span>
                     <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom:'5px'}} >{` ${user?.phone}`}</span>
-                    <span onClick={handleChangeAddress} style={{color:'#4950d6',fontWeight:'bold', cursor:'pointer', paddingRight:'100px'}}>Thay đối</span>
+                    <span  id='Change-address2' onClick={handleChangeAddress} style={{color:'#4950d6',fontWeight:'bold', cursor:'pointer', paddingRight:'100px'}}>Thay đối</span>
 
                   </div>
                 </WrapperInfo>
@@ -289,7 +289,7 @@ const PaymentPage = () => {
                 </WrapperTotal>
               </div>
               {payment === 'paypal' && sdkReady ? (
-                <div style={{width:'320px'}}>
+                <div style={{width:'320px'}} >
                 <PayPalButton
                   amount={Math.round(totalPriceMemo/24450)}
                   // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
@@ -302,6 +302,7 @@ const PaymentPage = () => {
                 </div>
               ):(
                 <ButtonComponent
+                id='CheckOut-Btn'
                 onClick={() => handleAddOrder()}
                 size={40}
                 styleButton={{

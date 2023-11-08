@@ -126,7 +126,7 @@ const ProductDetailsComponent = ({idProduct}) => {
                 <button style={{border:'none',background:'transparent', cursor:'pointer'}} onClick={() => handleChangeCount('decrease')}>
                   <MinusOutlined  style={{color: '#000',fontSize:'20px'}}  />
                 </button>
-                <WrapperInputNumber defaultValue={1} onChange={OnChange} value={numProduct} size='small' />
+                <WrapperInputNumber id='quantity_wanted' defaultValue={1} onChange={OnChange} value={numProduct} size='small' />
                 <button  style={{border:'none', background:'transparent', cursor:'pointer'}} onClick={() => handleChangeCount('increase')}>
                   <PlusOutlined  style={{color: '#000',fontSize:'20px'}} />
                 </button>
@@ -134,6 +134,7 @@ const ProductDetailsComponent = ({idProduct}) => {
           </div>
           <div style={{display:'flex',gap:'12px', alignItems:'center'}}>
             <ButtonComponent
+              id='buy-now'
               size={40} 
               styleButton={{background: 'rgb(255,57,69)', height: '48px', width: '220px', border:'1px', borderRadius:'4px', cursor: 'pointer'}}
               onClick={handleAddOrderProduct}
@@ -141,6 +142,7 @@ const ProductDetailsComponent = ({idProduct}) => {
               styleTextButton={{color:'#fff',fontSize:'15px',fontWeight:'700'}}
             ></ButtonComponent>
             <ButtonComponent
+              id='add-cart'
               size={40} 
               styleButton={{background: '#fff',height: '48px', width: '220px', border:'1px solid rgb(10,104,255)', borderRadius:'4px',cursor: 'pointer'}}
               textbutton={'Thêm vào giỏ hàng'}

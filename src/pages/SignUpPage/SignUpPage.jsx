@@ -26,7 +26,7 @@ const SignUpPage = () => {
  useEffect(() => {
     if(isSuccess){
       message.success()
-      //navigate('/sign-in')
+      navigate('/sign-in')
   }
   else if(isError){
     message.error()
@@ -50,13 +50,14 @@ const SignUpPage = () => {
 
   const handleSignUp = () => {
     mutation.mutate({email, password, confirmPassword})
+    
   }
   
   return (
     <div style={{display:'flex', alignItems:'center',justifyContent:'center', background:'rgba(0, 0, 0, 0.53)',height:'100vh'}}>
       <div style={{width:'800px',height:'450px', borderRadius:'6px',background:'#fff',display:'flex'}}>
       <WrapperContainerLeft>
-        <h1 >Xin chào</h1>
+        <h1  class='logo-signup'  >Đăng ký</h1>
         <p >Đăng nhập hoặc Tạo tài khoản</p>
         <InputForm id="sign-up-email" style={{marginBottom:'10px'}} placeholder="abc@gmail.com"
          value={email} onChange={handleOnChangeEmail}/>
@@ -76,7 +77,7 @@ const SignUpPage = () => {
               <EyeInvisibleFilled />
             )
           }</span>
-           <InputForm id="sign-up password" placeholder="password"style={{marginBottom:'10px'}} type= {isShowPassword ? "text": "password"}
+           <InputForm id="sign-up-password" placeholder="password"style={{marginBottom:'10px'}} type= {isShowPassword ? "text": "password"}
             value={password} onChange={handleOnChangePassword}/>
 
         </div>
@@ -96,7 +97,7 @@ const SignUpPage = () => {
               <EyeInvisibleFilled />
             )
           }</span>
-           <InputForm id="sign-up confirm-password" placeholder="confirm password" type= {isShowConfirmPassword ? "text": "password"}
+           <InputForm id="sign-up-confirm-password" placeholder="confirm password" type= {isShowConfirmPassword ? "text": "password"}
             value={confirmPassword} onChange={handleOnChangeConfirmPassword }/>
         </div>
         {data?.status === 'ERR' && <span style={{color:'red'}}>{data?.message}</span>}
@@ -105,6 +106,7 @@ const SignUpPage = () => {
             disabled={ !email.length || !password.length || !confirmPassword.length}
             onClick={handleSignUp}
             size={40} 
+            id="submit-signup"
             styleButton={{
               background: 'rgb(255,57,69)',
               height: '48px', 

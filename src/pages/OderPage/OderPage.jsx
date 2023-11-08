@@ -182,7 +182,7 @@ const OderPage = () => {
           <WrapperLeft>
             <WrapperStyleHeader>
                 <span style={{display: 'inline-block', width: '450px'}}>
-                  <Checkbox onChange={handleOnchangeCheckAll} checked={listChecked?.length === order?.orderItems?.length} ></Checkbox>
+                  <Checkbox onChange={handleOnchangeCheckAll}  checked={listChecked?.length === order?.orderItems?.length} ></Checkbox>
                   <span> Tất cả ({order?.orderItems?.length} sản phẩm)</span>
                 </span>
                 <div style={{flex:1,display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -197,13 +197,13 @@ const OderPage = () => {
                 return(
                   <WrapperItemOrder key={order?.product}>
                 <div style={{width: '440px', display: 'flex', alignItems: 'center', gap: "4px"}}> 
-                  <Checkbox onChange={onChange} value={order?.product} checked={listChecked.includes(order?.product)}></Checkbox>
+                  <Checkbox id='checked-item'  onChange={onChange} value={order?.product} checked={listChecked.includes(order?.product)}></Checkbox>
                     <Image preview={false} src= {order?.image} style={{width: '77px', height: '79px', objectFit: 'cover'}}/>
                     <div  style={{width: '260px', overflow:'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{order?.name}</div>
                   </div>
                   <div style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <span >
-                      <span style={{ fontSize: '13px', color: '#242424'}}>{convertPrice(order?.price * 1)}</span>
+                      <span id='price-item' style={{ fontSize: '13px', color: '#242424'}}>{convertPrice(order?.price * 1)}</span>
                     </span>
                   <WrapperCountOrder>
                     <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() =>  handleChangeCount('decrease', order?.product)} >
@@ -224,16 +224,16 @@ const OderPage = () => {
           </WrapperLeft>
           <WrapperRight>
             <div style={{width: '100%'}}>
-              <WrapperInfo>
+              {/* <WrapperInfo>
                 <div >
                   <span> Địa chỉ: </span>
                   <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding:'5px 0 5px'}}>{` ${user?.name}`}</span>
                   <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between',paddingBottom:'5px'}} >{` ${user?.address}`}</span>
                   <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom:'5px'}} >{` ${user?.phone}`}</span>
-                  <span onClick={handleChangeAddress} style={{color:'#4950d6',fontWeight:'bold', cursor:'pointer', paddingRight:'100px'}}>Thay đối</span>
+                  <span id='Change-address1' onClick={handleChangeAddress} style={{color:'#4950d6',fontWeight:'bold', cursor:'pointer', paddingRight:'100px'}}>Thay đối</span>
 
                 </div>
-              </WrapperInfo>
+              </WrapperInfo> */}
               <WrapperInfo>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                   <span>Tạm tính</span>
@@ -241,7 +241,7 @@ const OderPage = () => {
                 </div>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                   <span>Giảm giá</span>
-                  <span style={{color: '#000', fontSize: '14px', fontWeight: 'bold'}}>{convertPrice(priceDiscountMemo)}</span>
+                  <span id='discount-price' style={{color: '#000', fontSize: '14px', fontWeight: 'bold'}}>{convertPrice(priceDiscountMemo)}</span>
                   {/* <span style={{color: '#000', fontSize: '14px', fontWeight: 'bold'}}>{priceDiscountMemo}</span>  */}
                 </div>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -252,14 +252,17 @@ const OderPage = () => {
               <WrapperTotal>
                 <span>Tổng tiền</span>
                 <span style={{display:'flex', flexDirection: 'column'}}>
-                  <span style={{color: 'rgb(254, 56, 52)', fontSize: '24px', fontWeight: 'bold'}}>{convertPrice(totalPriceMemo)}</span>
+                  <span id='total-price' style={{color: 'rgb(254, 56, 52)', fontSize: '24px', fontWeight: 'bold'}}>{convertPrice(totalPriceMemo)}</span>
                   <span style={{color: '#000', fontSize: '11px'}}>(Đã bao gồm thuế VAT)</span>
                 </span>
               </WrapperTotal>
             </div>
+            {data?.status === 'ERR' && <span style={{color:'red'}}>{data?.message}</span>}
             <ButtonComponent
+              disabled={totalPriceMemo === 0}
               onClick={() => handleAddCart()}
               size={40}
+              id='Order-Btn'
               styleButton={{
                   background: 'rgb(255, 57, 69)',
                   height: '48px',

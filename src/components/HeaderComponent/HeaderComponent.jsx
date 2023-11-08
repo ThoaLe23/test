@@ -54,12 +54,12 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
 
   const content = (
     <div>
-      <WrapperContentPopup onClick={() =>  handleClickNavigate('profile')}>Thông tin người dùng</WrapperContentPopup>
+      <WrapperContentPopup id='profile' onClick={() =>  handleClickNavigate('profile')}>Thông tin người dùng</WrapperContentPopup>
       {user?.isAdmin && (
         <WrapperContentPopup onClick={() =>  handleClickNavigate('admin')}>Quản lý hệ thống</WrapperContentPopup>
       )}
-      <WrapperContentPopup  onClick={() =>  handleClickNavigate('my-order')}>Đơn hàng của tôi</WrapperContentPopup>
-      <WrapperContentPopup onClick={() =>  handleClickNavigate()}>Đăng xuất</WrapperContentPopup>
+      <WrapperContentPopup id='my-order' onClick={() =>  handleClickNavigate('my-order')}>Đơn hàng của tôi</WrapperContentPopup>
+      <WrapperContentPopup id='log-out' onClick={() =>  handleClickNavigate()}>Đăng xuất</WrapperContentPopup>
     </div>
   );
 
@@ -140,7 +140,7 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
         </LoadingComponent>
         {!isHiddenCart && (
             <div onClick={handleOrder} style={{cursor: 'pointer'}} >
-              <Badge count={order?.orderItems?.length  } size="small">
+              <Badge count={order?.orderItems?.length} size="small">
                 <ShoppingCartOutlined style={{ fontSize: '30px', color: '#fff' }} />
               </Badge>
               <WrapperTextHeaderSmall>Giỏ hàng</WrapperTextHeaderSmall>

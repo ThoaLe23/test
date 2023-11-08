@@ -74,9 +74,9 @@ const SignInPage = () => {
     <div style={{display:'flex', alignItems:'center',justifyContent:'center', background:'rgba(0, 0, 0, 0.53)',height:'100vh'}}>
       <div style={{width:'800px',height:'450px', borderRadius:'6px',background:'#fff',display:'flex'}}>
       <WrapperContainerLeft>
-        <h1 class='logo-login'>Xin chào</h1>
+        <h1 class='logo-login'>Đăng nhập</h1>
         <p >Đăng nhập hoặc Tạo tài khoản</p>
-        <InputForm id="sign-in email" style={{marginBottom:'10px'}} placeholder="abc@gmail.com"
+        <InputForm id="sign-in-email" style={{marginBottom:'10px'}} placeholder="abc@gmail.com"
          value={email} onChange={handleOnChangeEmail}/>
         <div style={{position:'relative'}}>
           <span
@@ -94,7 +94,7 @@ const SignInPage = () => {
               <EyeInvisibleFilled />
             )
           }</span>
-           <InputForm id="sign-up password" placeholder="password"style={{marginBottom:'10px'}} type= {isShowPassword ? "text": "password"}
+           <InputForm id="sign-in-password" placeholder="password"style={{marginBottom:'10px'}} type= {isShowPassword ? "text": "password"}
             value={password} onChange={handleOnChangePassword}/>
 
         </div>
@@ -103,6 +103,7 @@ const SignInPage = () => {
         <ButtonComponent
             disabled={!email.length || !password.length}
             onClick={handleSignIn}
+            id='submit-login'
             size={40} 
             styleButton={{
               background: 'rgb(255,57,69)',
