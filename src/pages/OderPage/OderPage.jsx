@@ -32,12 +32,7 @@ const OderPage = () => {
   })
   const navigate = useNavigate()
  
-  const handleOnChangeDetail = (e) => {
-    setStateUserDetail({
-      ...stateUserDetail,
-      [e.target.name]: e.target.value
-    })
-  }
+  
   const [form] = Form.useForm();
   const onChange = (e) =>{ 
     if(listChecked.includes(e.target.value)){
@@ -148,12 +143,13 @@ const OderPage = () => {
   //const userId = {key: user?.id, value: order?.orderItems}
   
   
-  const { data, isLoading,isSuccess} = mutationUpdate
+  const { data, isLoading} = mutationUpdate
   const handleCancelUpdate = () => {
     setStateUserDetail({
       name:'',
       phone:'',
       address:'',
+      isAdmin: false,
     })
     form.resetFields() 
       setIsOpenModelUpdateInfo(false)
@@ -168,6 +164,12 @@ const OderPage = () => {
         }
       })
     }
+  }
+  const handleOnChangeDetail = (e) => {
+    setStateUserDetail({
+      ...stateUserDetail,
+      [e.target.name]: e.target.value
+    })
   }
   const handleChangeAddress = () => {
     setIsOpenModelUpdateInfo(true)
@@ -224,7 +226,7 @@ const OderPage = () => {
           </WrapperLeft>
           <WrapperRight>
             <div style={{width: '100%'}}>
-              {/* <WrapperInfo>
+              <WrapperInfo>
                 <div >
                   <span> Địa chỉ: </span>
                   <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding:'5px 0 5px'}}>{` ${user?.name}`}</span>
@@ -233,7 +235,7 @@ const OderPage = () => {
                   <span id='Change-address1' onClick={handleChangeAddress} style={{color:'#4950d6',fontWeight:'bold', cursor:'pointer', paddingRight:'100px'}}>Thay đối</span>
 
                 </div>
-              </WrapperInfo> */}
+              </WrapperInfo>
               <WrapperInfo>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                   <span>Tạm tính</span>
@@ -276,7 +278,7 @@ const OderPage = () => {
           </WrapperRight>
           </div>
       </div>
-      <Modelcomponent title="Cập nhật thông tin giao hàng"  open={isOpenModelUpdateInfo} onCancel={handleCancelUpdate} onOk={handleUpdateInfoUser}>
+      <Modelcomponent title="Cập nhật thông tin giao hàng" open={isOpenModelUpdateInfo} onCancel={handleCancelUpdate} onOk={handleUpdateInfoUser}>
          <LoadingComponent isLoading={isLoading}>
          <Form 
                name="basic"
@@ -291,7 +293,7 @@ const OderPage = () => {
                name="name"
                rules={[{ required: true, message: 'Please input user name !' }]}
              >
-               <InputComponent value={stateUserDetail.name} onChange={handleOnChangeDetail} name="name"/>
+               <InputComponent value={stateUserDetail['name']} onChange={handleOnChangeDetail} name="name"/>
              </Form.Item>
            
              <Form.Item
@@ -299,14 +301,14 @@ const OderPage = () => {
                name="phone"
                rules={[{ required: true, message: 'Please input phone!' }]}
              >
-               <InputComponent value={stateUserDetail.phone} onChange={handleOnChangeDetail} name="phone"/>
+               <InputComponent value={stateUserDetail['phone']} onChange={handleOnChangeDetail} name="phone"/>
              </Form.Item>
              <Form.Item
                label="Address"
                name="address"
                rules={[{ required: true, message: 'Please input address!' }]}
              >
-               <InputComponent value={stateUserDetail.address} onChange={handleOnChangeDetail} name="address"/>
+               <InputComponent value={stateUserDetail['address']} onChange={handleOnChangeDetail} name="address"/>
              </Form.Item>
            </Form>
          </LoadingComponent>  

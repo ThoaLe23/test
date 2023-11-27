@@ -16,6 +16,7 @@ import jwt_decode from "jwt-decode";
 import {useDispatch} from 'react-redux';
 import { updateUser } from '../../redux/slides/userSlide'
 import localStorage from 'redux-persist/es/storage'
+import { isError } from '@tanstack/react-query'
 
 const SignInPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false)
@@ -34,10 +35,12 @@ const SignInPage = () => {
     if(isSuccess){
       if(location?.state){
         navigate(location?.state)
+        //navigate('/')
       }  else{
-        navigate('/')
+          navigate('/')
       }
       localStorage.setItem('access_token', JSON.stringify(data?.access_token))
+      localStorage.setItem('refresh_token', JSON.stringify(data?.refresh_token))
       if (data?.access_token) {  
         const decoded = jwt_decode(data?.access_token)   
         if(decoded?.id){
@@ -45,8 +48,7 @@ const SignInPage = () => {
         }
       }
     }
-    
-   },[ isSuccess ])
+  },[ isSuccess ])
 
    const handleGetDetailsUser = async ( id, token) => {
     const res = await UserService.getDetailsUser(id, token)

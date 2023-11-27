@@ -64,12 +64,7 @@ const ProfilePage = () => {
   const handleOnChangeEmail = (value) => {
     setEmail(value)
   }
-  const handleOnChangeProvince = (value) => {
-    setStateUser({
-      ...stateUser,
-      province: value
-    })
-  }
+  
   const handleOnChangeName = (value) => {
     setName(value)
 
@@ -81,13 +76,7 @@ const ProfilePage = () => {
     setAddress(value)
   }
 
-  const handleOnChangeAvatar = async ({fileList }) => {
-    const file =fileList[0]
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setAvatar(file.preview)
-  }
+
   const handleUpdate = () => {
     mutation.mutate({id: user?.id,email,name,phone,address, access_token: user?.access_token})
   }

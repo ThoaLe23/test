@@ -49,7 +49,7 @@ const OrderSuccess = () => {
               <WrapperInfo>
                 <div>
                   <Lable> Chọn phương thức thanh toán</Lable>
-                    <WrapperValue>
+                    <WrapperValue >
                       {orderContant.payment[state?.payment]}
                     </WrapperValue>
                 </div>
