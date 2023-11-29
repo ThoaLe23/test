@@ -140,6 +140,20 @@ const PaymentPage = () => {
       });
       dispatch(removeAllOrderProduct({listChecked: arrayOrdered}))
       message.success('Đặt hàng thành công!')
+      if(payment === 'later_money'){
+        navigate('/orderSuccess',{
+          state:{
+            user,
+            delivery,
+            payment : 'paypal' ,
+            orders: order?.orderItemsSelected,
+            deliveryPriceMemo: deliveryPriceMemo,
+            priceDiscountMemo: priceDiscountMemo,
+            totalPriceMemo: totalPriceMemo,
+          }
+        })  
+      }
+      else {
       navigate('/orderSuccess',{
         state:{
           user,
@@ -150,7 +164,7 @@ const PaymentPage = () => {
           priceDiscountMemo: priceDiscountMemo,
           totalPriceMemo: totalPriceMemo,
         }
-      })  
+      })  }
     }
     else if(isError){
       message.error()
@@ -173,6 +187,7 @@ const PaymentPage = () => {
         onSuccess: () => {
           dispatch(updateUser({name, phone, address}))
           setIsOpenModelUpdateInfo(false)
+          window.location.reload(true)
         }
       })
     }

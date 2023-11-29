@@ -161,6 +161,7 @@ const OderPage = () => {
         onSuccess: () => {
           dispatch(updateUser({name, phone, address}))
           setIsOpenModelUpdateInfo(false)
+          window.location.reload(true)
         }
       })
     }

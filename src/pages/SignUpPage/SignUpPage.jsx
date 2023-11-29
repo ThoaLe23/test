@@ -32,7 +32,8 @@ const SignUpPage = () => {
   else if(isError){
     //if(data.message ==='ERR')
     message.error()
-  }}
+  }
+}
  ,[isSuccess, isError])
 
 
@@ -103,7 +104,7 @@ const SignUpPage = () => {
             value={confirmPassword} onChange={handleOnChangeConfirmPassword }/>
         </div>
         {data?.status === 'ERR' && <span style={{color:'red'}}>{data?.message}</span>}
-        {data?.status === 'SUCCESS' && <span style={{color: 'blue'}}>{data?.message}</span>}
+        
         <LoadingComponent isLoading={isLoading}>
         <ButtonComponent
             disabled={ !email.length || !password.length || !confirmPassword.length}

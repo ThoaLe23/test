@@ -32,12 +32,12 @@ const SignInPage = () => {
   const { data, isLoading , isSuccess} = mutation
 
   useEffect(() => {
-    if(isSuccess){
-      if(location?.state){
+    if (isSuccess) {
+      if(location?.state) {
         navigate(location?.state)
-        //navigate('/')
-      }  else{
-          navigate('/')
+        
+      }else if(data?.status === 'OK'){
+        navigate('/')
       }
       localStorage.setItem('access_token', JSON.stringify(data?.access_token))
       localStorage.setItem('refresh_token', JSON.stringify(data?.refresh_token))
@@ -47,8 +47,14 @@ const SignInPage = () => {
           handleGetDetailsUser(decoded?.id, data?.access_token)
         }
       }
+    
     }
-  },[ isSuccess ])
+    else if(isError){
+      if(data?.status ==='ERR')
+        message.error()
+        //navigate('/sign-in')
+   }
+  },[ isSuccess, isError])
 
    const handleGetDetailsUser = async ( id, token) => {
     const res = await UserService.getDetailsUser(id, token)

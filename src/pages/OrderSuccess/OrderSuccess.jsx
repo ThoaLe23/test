@@ -2,15 +2,9 @@ import React, { useEffect } from "react"
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent"
 import {  Image,  } from "antd"
 import {  WrapperInfo, WrapperItemOrder, WrapperContainer, WrapperStyleHeader,  Lable, WrapperValue, WrapperItemOrderInfo } from "./style"
-import * as UserService from '../../services/UserService'
-import * as OrderService from '../../services/OrderService'
-import { useDispatch, useSelector } from "react-redux"
-import { useMutationHooks } from "../../hooks/useMutationHook"
-import * as message from '../../components/Message/Message'
 import { convertPrice } from "../../utils"
 import { useLocation, useParams } from "react-router-dom"
 import { orderContant } from "../../contant"
-import { useQuery } from "@tanstack/react-query"
 
 const OrderSuccess = () => {
   const params = useParams()
@@ -27,7 +21,7 @@ const OrderSuccess = () => {
             <WrapperContainer>
             <WrapperInfo>
                 <div>
-                  <Lable> Chọn phương thức giao hàng</Lable>
+                  <Lable> Thông tin giao hàng</Lable>
                   <WrapperValue >
                     <div>
                       {state?.user?.name}
