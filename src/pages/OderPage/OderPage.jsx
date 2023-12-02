@@ -127,8 +127,8 @@ const OderPage = () => {
       message.error('Vui lòng chọn sản phẩm')
     }
     else if(!user?.phone || !user.name ||  !user?.address){
-      setIsOpenModelUpdateInfo(true)
-    }else{
+       setIsOpenModelUpdateInfo(true)}
+    else{
       navigate('/payment')
     }
   }
@@ -162,6 +162,7 @@ const OderPage = () => {
           dispatch(updateUser({name, phone, address}))
           setIsOpenModelUpdateInfo(false)
           window.location.reload(true)
+          
         }
       })
     }
@@ -233,7 +234,7 @@ const OderPage = () => {
                   <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding:'5px 0 5px'}}>{` ${user?.name}`}</span>
                   <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between',paddingBottom:'5px'}} >{` ${user?.address}`}</span>
                   <span style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom:'5px'}} >{` ${user?.phone}`}</span>
-                  <span id='Change-address1' onClick={handleChangeAddress} style={{color:'#4950d6',fontWeight:'bold', cursor:'pointer', paddingRight:'100px'}}>Thay đối</span>
+                  <span id='Change-address' onClick={handleChangeAddress} style={{color:'#4950d6',fontWeight:'bold', cursor:'pointer', paddingRight:'100px'}}>Thay đối</span>
 
                 </div>
               </WrapperInfo>
