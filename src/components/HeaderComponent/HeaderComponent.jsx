@@ -43,14 +43,13 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
     navigate('/')
     localStorage.removeItem('access_token')
     localStorage.clear()
+    window.location.reload(true)
   }
   useEffect(() => {
     setLoading(true)
     setUserName(user?.name)
     setLoading(false)
   },[user?.name])
-
-  
 
   const content = (
     <div>
@@ -87,11 +86,9 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
   const handleOrder = () =>{
     if(!user?.id){
       navigate('/sign-in')
-     
     }
     else {
       navigate('/oder')
-      
     }
   }
   return (
@@ -151,5 +148,4 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart= false}) => {
     </div>
   )
 }
-
 export default HeaderComponent

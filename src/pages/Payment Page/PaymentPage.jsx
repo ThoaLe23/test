@@ -145,7 +145,7 @@ const PaymentPage = () => {
           state:{
             user,
             delivery,
-            payment : 'paypal' ,
+            payment : 'Thanh toán khi nhận hàng' ,
             orders: order?.orderItemsSelected,
             deliveryPriceMemo: deliveryPriceMemo,
             priceDiscountMemo: priceDiscountMemo,
